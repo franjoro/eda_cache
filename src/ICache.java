@@ -1,9 +1,10 @@
 import Exception.DuplicatedKeyException;
+import Exception.KeyNotFoundException;
 
 import java.io.IOException;
 
 public class ICache {
-    private List<ObjectData> list;
+    private static List<ObjectData> list;
     private String workDirName = "cache";
     private FileHandler fileHandler;
 
@@ -66,7 +67,20 @@ public class ICache {
      * @param key Key to be stored.
      * @param value Value to be stored.
      */
-    // void put(String key, String value);
+    public boolean put(String key, String value){
+        String keyIn = setHashCode(key);
+        if (exists(keyIn)){
+            return false;
+        }
+        try {
+            fileHandler.createFileIn(getFileName(keyIn), workDirName);
+            fileHandler.writeInFile(getFileName(keyIn), value);
+            return true;
+        } catch (IOException e) {
+            System.out.println("Exception occurred: " + e);
+            return false;
+        }
+    }
 
     /**
      * Add a value to a new key. If key already exists, it throws an exception.
@@ -94,16 +108,41 @@ public class ICache {
      * @param key Key to be stored.
      * @throws KeyNotFoundException if key does not exist.
      */
-    // void remove(String key);
+
+    public boolean remove(String key) throws KeyNotFoundException{
+        try {
+            String keyIn = getFileName(setHashCode(key));
+            if (!exists(setHashCode(key))) {
+                throw new KeyNotFoundException("Key does not exist");
+            }
+            fileHandler.deleteFile(keyIn);;
+            list.removeByKey(key);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Exception occurred: " + e);
+            return false;
+        }
+
+    }
 
     /**
      * Count the keys (and values) stored in cache.
      *
      * @return Count of keys.
      */
-    // int size();
+    // TODO: DIEGO
+    public static int size(){
+        System.out.println("Size: " + list.size());
+        return list.size();
+    }
     private String getFileName(String key) {
         return workDirName + "\\" + key + ".txt";
+    }
+
+
+    private String setHashCode(String data){
+        String hash = String.format("%6x", data.hashCode());
+        return hash;
     }
 
 

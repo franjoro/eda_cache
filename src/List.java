@@ -18,7 +18,7 @@ public class List<T>  {
         return NodeUtils.listData(first);
     }
 
-    public List<T> insert( T data, int insertIndex) {
+    public void insert(T data, int insertIndex) {
 
         Node<T> newNode = new Node<>(data);
 
@@ -31,7 +31,6 @@ public class List<T>  {
             insertNodeAtPosition(insertIndex, newNode);
         }
 
-        return this;
     }
 
     private void throwIfIndexIsOutOfBounds(int index) {
@@ -52,6 +51,10 @@ public class List<T>  {
 
     private Node<T> getNodeAtPostion(int index) {
         return NodeUtils.getNodeByIndex(first, index);
+    }
+
+    public Node<T> getHead(){
+        return first;
     }
 
     private void insertNodeAtEnd(Node<T> newNode) {
@@ -102,6 +105,24 @@ public class List<T>  {
         }else{
             Node<T> prelast = getSecondToLast();
             prelast.setNext(null);
+        }
+    }
+
+    public void removeByKey(String key) {
+        Node<T> node = first;
+        Node<T> prevNode = null;
+        while(node != null){
+            ObjectData data = (ObjectData) node.getData();
+            if(data.getIdentifier().equals(key)){
+                if(prevNode == null){
+                    first = node.getNext();
+                }else{
+                    prevNode.setNext(node.getNext());
+                }
+                return;
+            }
+            prevNode = node;
+            node = node.getNext();
         }
     }
 

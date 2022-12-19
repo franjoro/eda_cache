@@ -1,16 +1,15 @@
 import Exception.DuplicatedKeyException;
-
+import Exception.KeyNotFoundException;
 import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) throws DuplicatedKeyException, IOException {
+    public static void main(String[] args) throws DuplicatedKeyException, KeyNotFoundException, IOException {
         ICache cache = new ICache();
 
-       try {
-           cache.addNew("clave1", "valor1");
-       }catch (DuplicatedKeyException e){
-           System.out.println(e.getMessage());
-       }
+        cache.addNew("clave1", "valor1");
+        cache.addNew("clave2", "valor2");
+        cache.addNew("clave3", "valor3");
+        cache.size();
 
 
     }

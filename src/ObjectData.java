@@ -28,6 +28,9 @@ public class ObjectData {
         return payLoad;
     }
 
+    public String getIdentifier() {
+        return identifier;
+    }
     /**
      * set hash code
      * @param data

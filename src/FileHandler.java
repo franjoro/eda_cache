@@ -25,6 +25,15 @@ public class FileHandler {
         return  folderCreated;
     }
 
+    public static boolean deleteFile(String fileName) {
+        File file = new File(fileName);
+        if (file.delete()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static void writeInFile(String fileName, String text) throws IOException {
         File file = new File(fileName);
         Scanner sc = new Scanner(file);
