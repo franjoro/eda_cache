@@ -35,7 +35,7 @@ public class ICache {
      * Get all keys stored in cache.
      * @return array of stored keys
      */
-    //  String[] getAll();
+    //String[] getAll();
     /**
      * Get the value associated with the key passed as argument.
      * @param key Key to look for
@@ -51,7 +51,7 @@ public class ICache {
      * @return The value associated with the key or the defaultValue if key was not
     found.
      */
-    // String getOrDefault(String key, String defaultValue);
+    //String getOrDefault(String key, String defaultValue);
 
     /**
      * Check is a key exists in cache.
