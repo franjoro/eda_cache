@@ -1,4 +1,6 @@
-public class List<T>  {
+package structure;
+
+public class List<T> implements IDataStructure<T> {
 
     private Node<T> first;
 
@@ -18,7 +20,7 @@ public class List<T>  {
         return NodeUtils.listData(first);
     }
 
-    public void insert(T data, int insertIndex) {
+    public List<T> insert(T data, int insertIndex) {
 
         Node<T> newNode = new Node<>(data);
 
@@ -31,6 +33,7 @@ public class List<T>  {
             insertNodeAtPosition(insertIndex, newNode);
         }
 
+        return this;
     }
 
     private void throwIfIndexIsOutOfBounds(int index) {
@@ -51,10 +54,6 @@ public class List<T>  {
 
     private Node<T> getNodeAtPostion(int index) {
         return NodeUtils.getNodeByIndex(first, index);
-    }
-
-    public Node<T> getHead(){
-        return first;
     }
 
     private void insertNodeAtEnd(Node<T> newNode) {
@@ -108,24 +107,6 @@ public class List<T>  {
         }
     }
 
-    public void removeByKey(String key) {
-        Node<T> node = first;
-        Node<T> prevNode = null;
-        while(node != null){
-            ObjectData data = (ObjectData) node.getData();
-            if(data.getIdentifier().equals(key)){
-                if(prevNode == null){
-                    first = node.getNext();
-                }else{
-                    prevNode.setNext(node.getNext());
-                }
-                return;
-            }
-            prevNode = node;
-            node = node.getNext();
-        }
-    }
-
     private Node<T> getSecondToLast(){
         return NodeUtils.getSecondToLast(first);
     }
@@ -134,6 +115,7 @@ public class List<T>  {
         first = first.getNext();
     }
 }
+
 
 class NodeUtils {
     public static <T> int count(Node<T> first) {
