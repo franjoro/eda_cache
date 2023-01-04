@@ -1,15 +1,19 @@
+package Cache;
+
 import Exception.DuplicatedKeyException;
 import Exception.KeyNotFoundException;
-import structure.TreeMap;
-
+import Structure.TreeMap;
 import java.io.IOException;
 
 public class ICache implements ICacheInterface {
-
     private String dirname = "cache";
     private TreeMap<String, String> cache;
     private FileHandler fileHandler = new FileHandler();
 
+    /**
+     * Constructor of the class ICache
+     * @throws IOException
+     */
     public ICache() throws IOException {
         if(!fileHandler.existFile(this.dirname)){
             fileHandler.createFolder(this.dirname);
@@ -26,6 +30,10 @@ public class ICache implements ICacheInterface {
 
     }
 
+    /**
+     * Returns all the keys of the cache
+     * @return String[] with all the keys
+     */
     public String[] getAll() {
         if (cache.isEmpty()) {
             return null;
@@ -40,6 +48,12 @@ public class ICache implements ICacheInterface {
 
     }
 
+    /**
+     * Returns the value of the key
+     * @param key
+     * @return
+     * @throws KeyNotFoundException
+     */
     public String get(String key) throws KeyNotFoundException {
         if (!cache.contains(key)) {
             throw new KeyNotFoundException("Key not found");
@@ -47,6 +61,12 @@ public class ICache implements ICacheInterface {
         return cache.get(key);
     }
 
+    /**
+     * Returns the value of the key or the default value if the key is not found
+     * @param key
+     * @param defaultValue
+     * @return String
+     */
     public String getOrDefault(String key, String defaultValue) {
         try {
             if (!cache.contains(key)) {
@@ -59,6 +79,11 @@ public class ICache implements ICacheInterface {
 
     }
 
+    /**
+     * Returns the file name of the key in the cache
+     * @param key
+     * @return boolean
+     */
     public boolean exists(String key) {
         boolean cacheContains = cache.contains(key);
         boolean fileExists = fileHandler.existFile(getFileName(key));
@@ -69,7 +94,11 @@ public class ICache implements ICacheInterface {
         return false;
     }
 
-
+    /**
+     * Updates the value of the key in the cache
+     * @param key
+     * @param value
+     */
     public void put(String key, String value) throws IOException {
         cache.put(key, value);
         String fileName = getFileName(key);
@@ -79,6 +108,12 @@ public class ICache implements ICacheInterface {
         }
     }
 
+    /**
+     * Adds a new key to the cache with the value
+     * @param key
+     * @param value
+     * @throws DuplicatedKeyException
+     */
     public void addNew(String key, String value) throws IOException {
         if (cache.contains(key)) {
             throw new DuplicatedKeyException("Key already exists");
@@ -90,6 +125,11 @@ public class ICache implements ICacheInterface {
         }
     }
 
+    /**
+     * Removes the key from the cache
+     * @param key
+     * @throws KeyNotFoundException
+     */
     public void remove(String key) throws KeyNotFoundException {
         if (!cache.contains(key)) {
             throw new KeyNotFoundException("Key not found");
@@ -100,10 +140,19 @@ public class ICache implements ICacheInterface {
 
     }
 
+    /**
+     * Shows the size of the cache
+     * @return String
+     */
     public int size() {
         return cache.size();
     }
 
+    /**
+     * Returns the file name of the key in the cache
+     * @param file
+     * @return String
+     */
     private String getFileName(String file) {
         return this.dirname + "/" + file + ".txt";
     }
