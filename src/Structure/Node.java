@@ -1,4 +1,4 @@
-package structure;
+package Structure;
 
 public class Node<T> {
     private T data;

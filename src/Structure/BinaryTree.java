@@ -1,4 +1,4 @@
-package structure;
+package Structure;
 
 
 public class BinaryTree<T extends Comparable<T>> implements IDataStructure<T> {

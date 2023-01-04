@@ -1,4 +1,4 @@
-package structure;
+package Structure;
 
 public class List<T> implements IDataStructure<T> {
 

@@ -1,4 +1,4 @@
-package structure;
+package Structure;
 
 public interface IDataStructure<T> {
     int size();
