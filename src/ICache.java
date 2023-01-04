@@ -1,13 +1,29 @@
-import structure.TreeMap;
-import Exception.KeyNotFoundException;
 import Exception.DuplicatedKeyException;
+import Exception.KeyNotFoundException;
+import structure.TreeMap;
+
+import java.io.IOException;
 
 public class ICache implements ICacheInterface {
 
+    private String dirname = "cache";
     private TreeMap<String, String> cache;
+    private FileHandler fileHandler = new FileHandler();
 
-    public ICache() {
-        cache = new TreeMap<>();
+    public ICache() throws IOException {
+        if(!fileHandler.existFile(this.dirname)){
+            fileHandler.createFolder(this.dirname);
+            cache = new TreeMap<>();
+        }else{
+            this.cache = new TreeMap<>();
+            String[] keys = fileHandler.readFolder(this.dirname);
+            for(String key : keys){
+                String value = fileHandler.readFile(getFileName(key));
+                this.cache.put(key, value);
+            }
+
+        }
+
     }
 
     public String[] getAll() {
@@ -44,19 +60,34 @@ public class ICache implements ICacheInterface {
     }
 
     public boolean exists(String key) {
-        return cache.contains(key);
+        boolean cacheContains = cache.contains(key);
+        boolean fileExists = fileHandler.existFile(getFileName(key));
+
+        if (cacheContains && fileExists) {
+            return true;
+        }
+        return false;
     }
 
 
-    public void put(String key, String value) {
+    public void put(String key, String value) throws IOException {
         cache.put(key, value);
+        String fileName = getFileName(key);
+
+        if(fileHandler.existFile(fileName)){
+            fileHandler.writeInFile(fileName, value);
+        }
     }
 
-    public void addNew(String key, String value) throws DuplicatedKeyException{
+    public void addNew(String key, String value) throws IOException {
         if (cache.contains(key)) {
             throw new DuplicatedKeyException("Key already exists");
         }
+        String fileName = getFileName(key);
         cache.put(key, value);
+        if(fileHandler.createFile(fileName)){
+            fileHandler.writeInFile(fileName, value);
+        }
     }
 
     public void remove(String key) throws KeyNotFoundException {
@@ -64,11 +95,17 @@ public class ICache implements ICacheInterface {
             throw new KeyNotFoundException("Key not found");
         }
         cache.remove(key);
+        System.out.println(fileHandler.deleteFile(getFileName(key)));
+
+
     }
 
     public int size() {
         return cache.size();
     }
 
+    private String getFileName(String file) {
+        return this.dirname + "/" + file + ".txt";
+    }
 
 }

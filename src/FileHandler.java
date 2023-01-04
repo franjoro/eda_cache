@@ -1,6 +1,6 @@
 import java.io.File;
-import java.io.IOException;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class FileHandler {
@@ -11,17 +11,14 @@ public class FileHandler {
      * @param fileName Name of the file to create.
      * @return True if file was created.
      */
-    public static void createFile(String fileName) {
-        File newFile = new File(fileName);
+    public static boolean createFile(String fileName) {
         try {
-            boolean fileCreated = newFile.createNewFile();
-            if (fileCreated) {
-                System.out.println("File created: " + newFile.getName());
-            } else {
-                System.out.println("File already exists.");
-            }
+            File newFile = new File(fileName);
+            return newFile.createNewFile();
+
         } catch (IOException e) {
             System.out.println("Exception occurred: " + e);
+            return false;
         }
     }
 
@@ -45,11 +42,8 @@ public class FileHandler {
      */
     public static boolean deleteFile(String fileName) {
         File file = new File(fileName);
-        if (file.delete()) {
-            return true;
-        } else {
-            return false;
-        }
+        System.out.println(file.getName());
+        return file.delete();
     }
 
     /**
@@ -96,5 +90,36 @@ public class FileHandler {
     public static boolean existFile(String fileName){
         File file = new File(fileName);
         return file.exists();
+    }
+
+    /**
+     * Read all files in a folder.
+     * @param folderName Name of the folder to look for.
+     * @return Array of files names in the folder.
+     */
+    public static String[] readFolder(String folderName)  {
+        File folder = new File(folderName);
+        File[] files = folder.listFiles();
+        String[] filesNames = new String[files.length];
+        for (int i = 0; i < files.length; i++) {
+            filesNames[i] = files[i].getName().replace(".txt", "");
+        }
+        return filesNames;
+    }
+
+    /**
+     * Read a file.
+     * @param fileName Name of the file to read.
+     * @return String with the content of the file.
+     * @throws IOException
+     */
+    public String readFile(String fileName) throws IOException {
+        File file = new File(fileName);
+        Scanner sc = new Scanner(file);
+        String fileContent = "";
+        while (sc.hasNextLine()) {
+            fileContent += sc.nextLine();
+        }
+        return fileContent;
     }
 }

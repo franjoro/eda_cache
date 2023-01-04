@@ -1,5 +1,6 @@
-import Exception.DuplicatedKeyException;
 import Exception.KeyNotFoundException;
+
+import java.io.IOException;
 
 public interface ICacheInterface {
     /**
@@ -37,15 +38,16 @@ public interface ICacheInterface {
      * Add or update the value associated to a key.
      * @param key Key to be stored.
      * @param value Value to be stored.
+     * @throws IOException the key already exists.
      */
-    void put(String key, String value);
+    void put(String key, String value) throws IOException;
     /**
      * Add a value to a new key. If key already exists, it throws an exception.
      * @param key Key to be stored.
      * @param value Value to be stored.
-     * @throws DuplicatedKeyException the key already exists.
+     * @throws IOException the key already exists.
      */
-    void addNew(String key, String value) throws DuplicatedKeyException;
+    void addNew(String key, String value) throws IOException;
     /**
      * Remove a key and its value.
      * @param key Key to be stored.
