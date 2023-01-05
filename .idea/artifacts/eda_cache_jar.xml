@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="eda_cache:jar">
+  <artifact type="jar" build-on-make="true" name="eda_cache:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/eda_cache_jar</output-path>
     <root id="archive" name="eda_cache.jar">
       <element id="module-output" name="eda_cache" />

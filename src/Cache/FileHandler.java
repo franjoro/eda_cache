@@ -53,7 +53,6 @@ public class FileHandler {
      *
      * @param fileName Name of the file to write.
      * @param text  Content to write in the file.
-     * @return True if file was written.
      */
     public static void writeInFile(String fileName, String text) throws IOException {
         File file = new File(fileName);
