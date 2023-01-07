@@ -40,12 +40,16 @@ public class FileHandler {
      * Delete a file with the name passed as argument.
      *
      * @param fileName Name of the file to write.
-     * @return True if file was deleted.
      */
-    public static boolean deleteFile(String fileName) {
-        File file = new File(fileName);
-        System.out.println(file.getName());
-        return file.delete();
+    public static void deleteFile(String fileName) {
+        try {
+            File file = new File(fileName);
+            if (file.exists()) {
+                System.out.println("File deleted: " + file.delete());
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
