@@ -1,6 +1,5 @@
 package Structure;
 
-
 public class BinaryTree<T extends Comparable<T>> implements IDataStructure<T> {
 
     private TreeNode<T> root;

@@ -44,7 +44,6 @@ public class FileHandler {
      */
     public static boolean deleteFile(String fileName) {
         File file = new File(fileName);
-        System.out.println(file.getName());
         return file.delete();
     }
 
@@ -60,6 +59,7 @@ public class FileHandler {
         FileWriter fileWriter = new FileWriter(fileName);
         fileWriter.write(text);
         fileWriter.close();
+        sc.close();
     }
 
     /**
@@ -121,6 +121,7 @@ public class FileHandler {
         while (sc.hasNextLine()) {
             fileContent += sc.nextLine();
         }
+        sc.close();
         return fileContent;
     }
 }
