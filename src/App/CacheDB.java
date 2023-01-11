@@ -58,14 +58,14 @@ public class CacheDB implements Callable<Integer> {
 
 
 
-    @Command(name = "put", description = "Updates the value associated to a key.")
+    @Command(name = "put", description = "Updates the value associated to a key. Value must have apostrophes.")
     public Integer put(
             @Parameters(arity = "1", paramLabel = "Key", description = "Key to use in the command.") String key,
             @Parameters(arity = "1", paramLabel = "Value", description = "Value to use in the command.") String value) throws IOException {
         ICache cache = new ICache();
         try {
             cache.put(key, value);
-            System.out.println(value + " updated into " + key);
+            System.out.println(key + " updated with " + value);
             return 0;
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -74,11 +74,10 @@ public class CacheDB implements Callable<Integer> {
     }
 
     @Command(name = "remove", description = "Delete a key")
-    public Integer remove(@Parameters(arity = "1", paramLabel = "Key", description = "The key") String key) throws IOException, KeyNotFoundException {
+    public Integer remove(@Parameters(arity = "1", paramLabel = "Key", description = "Key to use in command") String key) throws IOException, KeyNotFoundException {
         ICache cache = new ICache();
         try {
             cache.remove(key);
-            System.out.println(key + " deleted");
             return 0;
         } catch (Exception e) {
             System.out.println(e.getMessage());

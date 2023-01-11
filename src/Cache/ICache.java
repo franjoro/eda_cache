@@ -17,20 +17,20 @@ public class ICache implements ICacheInterface {
      * @throws IOException
      */
     public ICache() {
-        if (!fileHandler.existFile(this.dirname)) {
-            fileHandler.createFolder(this.dirname);
-            cache = new TreeMap<>();
-        } else {
-            try {
+        try {
+            if (!fileHandler.existFile(this.dirname)) {
+                fileHandler.createFolder(this.dirname);
+                cache = new TreeMap<>();
+            } else {
                 this.cache = new TreeMap<>();
                 String[] keys = fileHandler.readFolder(this.dirname);
                 for (String key : keys) {
                     String value = fileHandler.readFile(getFileName(key));
                     this.cache.put(key, value);
                 }
-            } catch (IOException e) {
-                System.out.println("Exception occurred: " + e);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }
@@ -57,9 +57,9 @@ public class ICache implements ICacheInterface {
     /**
      * Returns the value of the key
      *
-     * @param key
-     * @return
-     * @throws KeyNotFoundException
+     * @param key Key to search
+     * @return String with the value
+     * @throws KeyNotFoundException if the key is not in the cache
      */
     public String get(String key) throws KeyNotFoundException {
         if (!cache.contains(key)) {
@@ -71,8 +71,8 @@ public class ICache implements ICacheInterface {
     /**
      * Returns the value of the key or the default value if the key is not found
      *
-     * @param key
-     * @param defaultValue
+     * @param key          Key to search
+     * @param defaultValue Default value to return if the key is not found
      * @return String
      */
     public String getOrDefault(String key, String defaultValue) {
@@ -98,6 +98,7 @@ public class ICache implements ICacheInterface {
         boolean fileExists = fileHandler.existFile(getFileName(key));
 
         if (cacheContains && fileExists) {
+            System.out.println(key + " exists");
             return true;
         }
         return false;
@@ -139,16 +140,14 @@ public class ICache implements ICacheInterface {
     /**
      * Removes the key from the cache
      *
-     * @param key
-     * @throws KeyNotFoundException
+     * @param key key to be removed
      */
-    public void remove(String key) throws KeyNotFoundException {
-        if (!cache.contains(key)) {
-            throw new KeyNotFoundException("Key not found");
+    public boolean remove(String key) {
+        if (cache.remove(key)) {
+            fileHandler.deleteFile(getFileName(key));
+            return true;
         }
-        cache.remove(key);
-        fileHandler.deleteFile(getFileName(key));
-
+        return false;
     }
 
     /**

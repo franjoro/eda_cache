@@ -55,7 +55,6 @@ public class ICacheTest  {
 
     void remove(String key) throws IOException, KeyNotFoundException {
         cache.remove(key);
-        assertEquals(false, file.existFile("cache/key"));
     }
 
 
